@@ -1,0 +1,34 @@
+#Spring settings
+spring:
+    application:
+        name: tickr-module
+
+## Tracing and management settings
+management:
+    tracing:
+        sampling:
+            probability: 1.0
+    endpoint:
+        prometheus:
+            access: READ_ONLY
+    endpoints:
+        web:
+            exposure:
+                include: health,metrics,prometheus
+
+# Quartz settings
+scheduler:
+  tasks:
+    - name: resendFailedMails
+      cron: "0 * * * * ?"
+      http:
+        method: POST
+        url: http://email-module:8080/email/resend-failed
+        body: null
+    - name: queueRelevantScheduledMails
+      cron: "0 * * * * ?"
+      http:
+        method: POST
+        url: http://email-module:8080/email/queue-relevant-sechudled
+        body: null
+        
