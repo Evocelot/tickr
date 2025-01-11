@@ -1,10 +1,8 @@
-# springboot - microbase
+# tickr
 
-springboot - microbase is an open-source starter project for quickly building `scalable` and `maintainable` Spring Boot-based microservices.
+The `tickr` is a robust and scalable solution built using Spring Boot, designed to handle scheduled tasks efficiently. Initially focused on sending HTTP requests, the platform is engineered to support additional use cases in the future. By leveraging `Quartz` for task scheduling, tickr ensures precise and reliable execution of tasks, including retries for failed operations. Designed as a standalone microservice, it can be seamlessly integrated into larger systems, offering flexibility and ease of use for managing scheduled operations.
 
-The project provides a solution for `centralized log collection` using Logstash, Elasticsearch, and Kibana, alongside `monitoring capabilities` with Prometheus, Jaeger, and Grafana. It also includes basic JPA functionality to facilitate database interactions.
-
-For designing the `database schema`, we recommend using the following project: [Evocelot/liquibase-base ](https://github.com/Evocelot/liquibase-base).
+The starter project: `springboot - microbase` is an open-source starter project for quickly building `scalable` and `maintainable` Spring Boot-based microservices. For more details: [Evocelot/springboot-microbase](https://github.com/Evocelot/springboot-microbase).
 
 ## Technologies used
 
@@ -18,6 +16,7 @@ For designing the `database schema`, we recommend using the following project: [
 - Jaeger
 - Prometheus
 - Grafana
+- Quartz
 
 ## How to use:
 
