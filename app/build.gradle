@@ -1,0 +1,64 @@
+plugins {
+    id 'application'
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+def loadEnvFile() {
+    def env = [:]
+    file('../local.env').eachLine { line ->
+        def (key, value) = line.split('=').collect { it.trim() }
+        env[key] = value
+    }
+    return env
+}
+
+def env = loadEnvFile()
+
+group = 'hu.evocelot.sample'
+version = env.VERSION
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '3.4.1'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '3.4.1'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '3.4.1'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '3.4.1'
+    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.0'
+    implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.14.2'
+    implementation group: 'io.micrometer', name: 'micrometer-tracing-bridge-otel', version: '1.4.1'
+    implementation group: 'io.opentelemetry', name: 'opentelemetry-exporter-otlp', version: '1.43.0'
+    implementation group: 'com.google.guava', name: 'guava', version: '33.0.0-jre'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.5.1'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.7.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Apply a specific Java toolchain to ease working on different environments.
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'hu.evocelot.sample.Application'
+}
+
+tasks.named('test') {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
+
+tasks.named('bootJar') {
+    archiveBaseName.set(env.APPNAME)
+}
