@@ -45,7 +45,7 @@ start-local-container: create-podman-network stop-local-container build-docker-i
 		podman run -d \
 		--name $(APPNAME) \
 		--network $(NETWORK_NAME) \
-		-p 8080:8080 \
+		-p 8081:8080 \
 		-e TZ=UTC \
 		-e LOGSTASH_HOST=$(LOGSTASH_HOST) \
 		-e LOGSTASH_PORT=$(LOGSTASH_PORT) \

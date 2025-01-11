@@ -1,6 +1,6 @@
-# tickr
+# TickR
 
-The `tickr` is a robust and scalable solution built using Spring Boot, designed to handle scheduled tasks efficiently. Initially focused on sending HTTP requests, the platform is engineered to support additional use cases in the future. By leveraging `Quartz` for task scheduling, tickr ensures precise and reliable execution of tasks, including retries for failed operations. Designed as a standalone microservice, it can be seamlessly integrated into larger systems, offering flexibility and ease of use for managing scheduled operations.
+The `TickR` is a robust and scalable solution built using Spring Boot, designed to handle scheduled tasks efficiently. Initially focused on sending HTTP requests, the platform is engineered to support additional use cases in the future. By leveraging `Quartz` for task scheduling, TickR ensures precise and reliable execution of tasks. Designed as a standalone microservice, it can be seamlessly integrated into larger systems, offering flexibility and ease of use for managing scheduled operations.
 
 The starter project: `springboot - microbase` is an open-source starter project for quickly building `scalable` and `maintainable` Spring Boot-based microservices. For more details: [Evocelot/springboot-microbase](https://github.com/Evocelot/springboot-microbase).
 
@@ -17,6 +17,48 @@ The starter project: `springboot - microbase` is an open-source starter project 
 - Prometheus
 - Grafana
 - Quartz
+
+## Job types
+
+The TickR application currently supports two distinct job types, tailored to meet different operational needs. Each job type is configured via the application's YAML or properties file and scheduled with Quartz.
+
+### 1. HTTP jobs
+
+HTTP jobs are designed to perform scheduled HTTP requests, making them ideal for tasks like invoking APIs or triggering webhooks. These jobs include details such as the HTTP method, URL, and body.
+
+Example Configuration:
+```yml
+scheduler:
+  tasks:
+    - name: sendHttpRequestTask
+      cron: "0 0/5 * * * ?"
+      http:
+        method: POST
+        url: http://example.com/api
+        body: '{"key": "value"}'
+```
+
+When this job is triggered:
+
+- The configured HTTP request (e.g., a POST to http://example.com/api) is executed.
+- The job logs the request details and the response for debugging and monitoring purposes.
+
+### 2. Log Jobs
+
+Log jobs are simpler and serve primarily as scheduled logging tasks. These jobs are useful for periodic logging of specific messages, often for diagnostic or informational purposes.
+
+Example Configuration:
+```yml
+scheduler:
+  tasks:
+    - name: printTestLogTask
+      cron: "0 0 * * * ?"
+      log:
+        message: "Hourly log message for system status."
+```
+When this job is triggered:
+
+The specified message (e.g., "Hourly log message for system status.") is logged using the application's logging framework.
 
 ## How to use:
 
@@ -46,10 +88,6 @@ SPRING_PROFILES_ACTIVE | dev | The profile to run with the application. Can be `
 LOGSTASH_HOST | logstash | The name of the logstash container to push the logs from the springboot app. It is only required when using the `logstash` profile. |
 LOGSTASH_PORT | 5000 | The port of the logstash container. It is only required when using the `logstash` profile. |
 TRACING_URL | http://jaeger:4318/v1/traces | The url of the jaeger instance for sending tracing details. |
-SPRING_DATASOURCE_URL | jdbc:mariadb://evocelot-mariadb:3306/sample | The JDBC URL of the DBMS to connect to. |
-SPRING_DATASOURCE_USERNAME | root | The username for connecting to the DBMS. |
-SPRING_DATASOURCE_PASSWORD | admin | The password for connecting to the DBMS. |
-SPRING_DATASOURCE_DRIVER_CLASS_NAME | org.mariadb.jdbc.Driver | The fully qualified name of the JDBC driver class used for the DBMS connection. |
 
 ### Configuring via properties file
 

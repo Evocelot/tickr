@@ -28,15 +28,12 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '3.4.1'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '3.4.1'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '3.4.1'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '3.4.1'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-quartz', version: '3.4.1'
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.0'
     implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.14.2'
     implementation group: 'io.micrometer', name: 'micrometer-tracing-bridge-otel', version: '1.4.1'
     implementation group: 'io.opentelemetry', name: 'opentelemetry-exporter-otlp', version: '1.43.0'
     implementation group: 'com.google.guava', name: 'guava', version: '33.0.0-jre'
-    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.5.1'
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.7.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -52,7 +49,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'hu.evocelot.sample.Application'
+    mainClass = 'hu.evocelot.tickr.Application'
 }
 
 tasks.named('test') {
