@@ -15,4 +15,4 @@ scheduler:
     - name: customJob
       cron: "0 * * * * ?" # Every minute
       custom:
-        message: test        
+        message: test
