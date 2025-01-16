@@ -86,6 +86,9 @@ SPRING_PROFILES_ACTIVE | dev | The profile to run with the application. Can be `
 LOGSTASH_HOST | logstash | The name of the logstash container to push the logs from the springboot app. It is only required when using the `logstash` profile. |
 LOGSTASH_PORT | 5000 | The port of the logstash container. It is only required when using the `logstash` profile. |
 TRACING_URL | http://jaeger:4318/v1/traces | The url of the jaeger instance for sending tracing details. |
+SCHEDULER_TASKS_X_NAME | testTask | The name of the scheduled task. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_NAME`).
+SCHEDULER_TASKS_X_CRON | "0 * * * * ?" | The cron expression that defines the schedule for the task. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_CRON`).
+SCHEDULER_TASKS_X_CUSTOM_MESSAGE | testMessage | The custom log message displayed when the task runs, applicable for `custom tasks`. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_CUSTOM_MESSAGE`).
 
 ### Configuring via properties file
 
