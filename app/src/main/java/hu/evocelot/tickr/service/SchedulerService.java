@@ -3,6 +3,8 @@ package hu.evocelot.tickr.service;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -14,25 +16,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hu.evocelot.tickr.configuration.HttpTaskConfig;
-import hu.evocelot.tickr.configuration.LogTaskConfig;
+import hu.evocelot.tickr.configuration.CustomTaskConfig;
 import hu.evocelot.tickr.configuration.SchedulerConfig;
 import hu.evocelot.tickr.configuration.TaskConfig;
 import hu.evocelot.tickr.constant.ApplicationConstant;
 import hu.evocelot.tickr.job.HttpJob;
-import hu.evocelot.tickr.job.LogJob;
+import hu.evocelot.tickr.job.CustomJob;
 
 /**
  * Service for scheduling tasks using Quartz Scheduler.
  * <p>
  * This service retrieves task configurations from the {@link SchedulerConfig}
  * and dynamically schedules jobs with their respective triggers based on cron
- * expressions. Each task is mapped to an {@link HttpJob} instance,
- * which
- * executes the specified HTTP requests.
+ * expressions.
  * </p>
  */
 @Service
 public class SchedulerService {
+
+    private static final Logger LOG = LogManager.getLogger(SchedulerService.class);
 
     @Autowired
     private Scheduler scheduler;
@@ -65,12 +67,14 @@ public class SchedulerService {
                         .withIdentity(task.getName())
                         .build();
                 jobDetail.getJobDataMap().put(ApplicationConstant.JOB_DATA_KEY, httpConfig);
-            } else if (Objects.nonNull(task.getLog())) {
-                LogTaskConfig logTaskConfig = (LogTaskConfig) task.getLog();
-                jobDetail = JobBuilder.newJob(LogJob.class)
+            } else if (Objects.nonNull(task.getCustom())) {
+                CustomTaskConfig logTaskConfig = (CustomTaskConfig) task.getCustom();
+                jobDetail = JobBuilder.newJob(CustomJob.class)
                         .withIdentity(task.getName())
                         .build();
                 jobDetail.getJobDataMap().put(ApplicationConstant.JOB_DATA_KEY, logTaskConfig);
+            } else {
+                throw new UnsupportedOperationException("The job type is not supported!");
             }
 
             // Create a Trigger with the task's cron schedule

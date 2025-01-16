@@ -8,9 +8,9 @@ import java.util.Objects;
  * <p>
  * This class allows defining task-specific properties such as the task's name,
  * schedule, and type. Additionally, a task can have either an
- * {@link HttpTaskConfig} or a {@link LogTaskConfig} associated with it, but not
- * both at the same time. Attempting to set both configurations will result in
- * an {@link IllegalStateException}.
+ * {@link HttpTaskConfig} or a {@link CustomTaskConfig} associated with it, but
+ * not both at the same time. Attempting to set both configurations will result
+ * in an {@link IllegalStateException}.
  * 
  * @author mark.danisovszky
  */
@@ -20,7 +20,7 @@ public class TaskConfig {
     private String cron;
     private String type;
     private HttpTaskConfig http;
-    private LogTaskConfig log;
+    private CustomTaskConfig custom;
 
     public String getName() {
         return name;
@@ -51,22 +51,22 @@ public class TaskConfig {
     }
 
     public void setHttp(HttpTaskConfig http) {
-        if (Objects.nonNull(log)) {
+        if (Objects.nonNull(custom)) {
             throw new IllegalStateException();
         }
 
         this.http = http;
     }
 
-    public LogTaskConfig getLog() {
-        return log;
+    public CustomTaskConfig getCustom() {
+        return custom;
     }
 
-    public void setLog(LogTaskConfig log) {
+    public void setCustom(CustomTaskConfig custom) {
         if (Objects.nonNull(http)) {
             throw new IllegalStateException();
         }
 
-        this.log = log;
+        this.custom = custom;
     }
 }
