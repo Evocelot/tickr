@@ -51,10 +51,6 @@ start-local-container: create-podman-network stop-local-container build-docker-i
 		-e LOGSTASH_PORT=$(LOGSTASH_PORT) \
 		-e SPRING_PROFILES_ACTIVE=logstash \
 		-e TRACING_URL=http://$(JAEGER_HOST):$(JAEGER_TRACING_PORT)/v1/traces \
-		-e SPRING_DATASOURCE_URL=jdbc:mariadb://evocelot-mariadb:3306/tickr \
-		-e SPRING_DATASOURCE_USERNAME=root \
-		-e SPRING_DATASOURCE_PASSWORD=admin \
-		-e SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.mariadb.jdbc.Driver \
 		$(IMAGE_NAME); \
 		\
 		echo "$(APPNAME) started at: http://localhost:8081\n")
