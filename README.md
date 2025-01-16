@@ -43,9 +43,9 @@ When this job is triggered:
 - The configured HTTP request (e.g., a POST to http://example.com/api) is executed.
 - The job logs the request details and the response for debugging and monitoring purposes.
 
-### 2. Log Jobs
+### 2. Custom Jobs
 
-Log jobs are simpler and serve primarily as scheduled logging tasks. These jobs are useful for periodic logging of specific messages, often for diagnostic or informational purposes.
+Custom jobs are simpler and serve primarily as scheduled logging tasks.
 
 Example Configuration:
 ```yml
@@ -53,7 +53,7 @@ scheduler:
   tasks:
     - name: printTestLogTask
       cron: "0 0 * * * ?"
-      log:
+      custom:
         message: "Hourly log message for system status."
 ```
 When this job is triggered:
@@ -72,9 +72,7 @@ make start-local-container
 
 > **_NOTE:_** If you want to run only the application itself (without ELK and observability tools), set the Spring profile to `dev`. This can be done inside the `Makefile`.
 
-By default, the application runs on port `8080`.
-
-The swagger UI can be accessed at: http://localhost:8080/swagger-ui/index.html
+By default, the application runs on port `8081`.
 
 ## Configuration
 

@@ -8,7 +8,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import hu.evocelot.tickr.configuration.LogTaskConfig;
+import hu.evocelot.tickr.configuration.CustomTaskConfig;
 import hu.evocelot.tickr.configuration.TaskConfig;
 import hu.evocelot.tickr.constant.ApplicationConstant;
 
@@ -17,9 +17,9 @@ import hu.evocelot.tickr.constant.ApplicationConstant;
  * execution.
  * 
  * <p>
- * The {@code LogJob} retrieves a {@link TaskConfig} object from the
- * {@link JobExecutionContext}, extracts the {@link LogTaskConfig}, and logs the
- * configured message using Log4j.
+ * The {@code CustomJob} retrieves a {@link TaskConfig} object from the
+ * {@link JobExecutionContext}, extracts the {@link CustomTaskConfig}, and logs
+ * the configured message using Log4j.
  * 
  * <h2>Purpose</h2>
  * This job is designed to handle logging tasks as part of a scheduled workflow.
@@ -28,27 +28,27 @@ import hu.evocelot.tickr.constant.ApplicationConstant;
  * 
  * @author mark.danisovszky
  */
-public class LogJob implements Job {
-    private static final Logger LOG = LogManager.getLogger(LogJob.class);
+public class CustomJob implements Job {
+    private static final Logger LOG = LogManager.getLogger(CustomJob.class);
 
     /**
-     * Executes the logging job.
+     * Executes the custom job.
      * 
      * <p>
      * Retrieves the {@link TaskConfig} from the job data map, extracts the
-     * {@link LogTaskConfig}, and logs the configured message.
+     * {@link CustomTaskConfig}, and logs the configured message.
      * 
      * @param context the Quartz job execution context containing the job details
      *                and data
      * @throws JobExecutionException if the job data map is missing required
-     *                               configuration or
-     *                               if an error occurs during execution
+     *                               configuration or if an error occurs during
+     *                               execution
      */
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        LogTaskConfig taskConfig = (LogTaskConfig) context.getJobDetail().getJobDataMap()
+        CustomTaskConfig taskConfig = (CustomTaskConfig) context.getJobDetail().getJobDataMap()
                 .get(ApplicationConstant.JOB_DATA_KEY);
 
-        LOG.info(MessageFormat.format("LogJob executed. Message: {0}", taskConfig.getMessage()));
+        LOG.info(MessageFormat.format("CustomJob executed. Message: {0}", taskConfig.getMessage()));
     }
 }

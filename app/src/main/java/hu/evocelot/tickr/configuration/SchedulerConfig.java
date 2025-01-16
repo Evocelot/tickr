@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
  *         body: null
  *     - name: printTestLogTask
  *       cron: "0 * * * * ?"
- *       log:
+ *       custom:
  *         message: "Test message"
  * </pre>
  * </p>
