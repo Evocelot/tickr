@@ -3,6 +3,19 @@ spring:
     application:
         name: tickr-module
 
+# Management details
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  endpoint:
+    prometheus:
+      access: READ_ONLY
+
 # Quartz settings
 scheduler:
   tasks:
