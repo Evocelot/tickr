@@ -7,10 +7,13 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import hu.evocelot.tickr.configuration.CustomTaskConfig;
 import hu.evocelot.tickr.configuration.TaskConfig;
 import hu.evocelot.tickr.constant.ApplicationConstant;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 
 /**
  * A Quartz {@link Job} implementation that logs a predefined message upon
@@ -31,6 +34,9 @@ import hu.evocelot.tickr.constant.ApplicationConstant;
 public class CustomJob implements Job {
     private static final Logger LOG = LogManager.getLogger(CustomJob.class);
 
+    @Autowired
+    private Tracer tracer;
+
     /**
      * Executes the custom job.
      * 
@@ -46,9 +52,11 @@ public class CustomJob implements Job {
      */
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        Span span = tracer.spanBuilder("CustomJob").startSpan();
         CustomTaskConfig taskConfig = (CustomTaskConfig) context.getJobDetail().getJobDataMap()
                 .get(ApplicationConstant.JOB_DATA_KEY);
 
         LOG.info(MessageFormat.format("CustomJob executed. Message: {0}", taskConfig.getMessage()));
+        span.end();
     }
 }
