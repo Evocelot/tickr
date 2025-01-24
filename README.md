@@ -1,122 +1,131 @@
 # TickR
 
-The `TickR` is a robust and scalable solution built using Spring Boot, designed to handle scheduled tasks efficiently. Initially focused on sending HTTP requests, the platform is engineered to support additional use cases in the future. By leveraging `Quartz` for task scheduling, TickR ensures precise and reliable execution of tasks. Designed as a standalone microservice, it can be seamlessly integrated into larger systems, offering flexibility and ease of use for managing scheduled operations.
+`TickR` is a robust solution built using Spring Boot, designed to handle scheduled tasks efficiently. Initially focused on sending HTTP requests, the platform is engineered to support additional use cases in the future. By leveraging `Quartz` for task scheduling, `TickR` ensures precise and reliable execution of tasks. Designed as a standalone microservice, it can be seamlessly integrated into larger systems, offering flexibility and ease of use for managing scheduled operations.
 
 The starter project: `springboot - microbase` is an open-source starter project for quickly building `scalable` and `maintainable` Spring Boot-based microservices. For more details: [Evocelot/springboot-microbase](https://github.com/Evocelot/springboot-microbase).
 
 ## Technologies used
 
-- Java 21
-- SpringBoot 3.4.1
-- Docker / Podman
-- Make
-- Elasticsearch
-- Logstash
-- Kibana
-- Jaeger
-- Prometheus
-- Grafana
-- Quartz
+- **Java 21**
+- **SpringBoot 3.4.1**
+- **Docker / Podman**
+- **Make**
+- **Quartz**
+- **Elasticsearch**
+- **Logstash**
+- **Kibana**
+- **Jaeger**
+- **Prometheus**
+- **Grafana**
 
-## Job types
+## How to run:
 
-The TickR application currently supports two distinct job types, tailored to meet different operational needs. Each job type is configured via the application's YAML or properties file and scheduled with Quartz.
+The project includes a `Makefile` to simplify application startup. Each Makefile target can be executed independently.
 
-### 1. HTTP jobs
+> **_NOTE:_** If you are using Docker instead of Podman, replace `podman` with `docker` in the Makefile commands.
 
-HTTP jobs are designed to perform scheduled HTTP requests, making them ideal for tasks like invoking APIs or triggering webhooks. These jobs include details such as the HTTP method, URL, and body.
+### Run with full stack
 
-Example Configuration:
-```yml
-scheduler:
-  tasks:
-    - name: sendHttpRequestTask
-      cron: "0 0/5 * * * ?"
-      http:
-        method: POST
-        url: http://example.com/api
-        body: '{"key": "value"}'
+To run the application along with ELK stack and observability features, execute:
+
+```bash
+make all
 ```
 
-When this job is triggered:
+This command starts the following containers:
 
-- The configured HTTP request (e.g., a POST to http://example.com/api) is executed.
-- The job logs the request details and the response for debugging and monitoring purposes.
+- elasticsearch
+- logstash
+- kibana
+- jaeger
+- prometheus
+- grafana
+- tickr-module
 
-### 2. Custom Jobs
+By default, the tickr-module runs on port `8081`.
 
-Custom jobs are simpler and serve primarily as scheduled logging tasks.
+### Run TickR module only
 
-Example Configuration:
-```yml
-scheduler:
-  tasks:
-    - name: printTestLogTask
-      cron: "0 0 * * * ?"
-      custom:
-        message: "Hourly log message for system status."
-```
-When this job is triggered:
-
-The specified message (e.g., "Hourly log message for system status.") is logged using the application's logging framework.
-
-## How to use:
-
-The project includes a `Makefile` that simplifies starting the application. Each target in the Makefile can be executed independently.
-
-To run the application in a local container, execute the following command:
+To run only the TickR module only:
 
 ```bash
 make start-local-container
 ```
 
-> **_NOTE:_** If you want to run only the application itself (without ELK and observability tools), set the Spring profile to `dev`. This can be done inside the `Makefile`.
+> **_NOTE:_** To disable log collection and tracing, manually set the `LOGSTASH_ENABLED` and `TRACING_ENABLED` environment variables to `"false"` in the `Makefile`.
 
-By default, the application runs on port `8081`.
+## Job types
 
-## Configuration
+The TickR application currently supports two distinct job types, tailored to meet different operational needs. Each job type can be configured via `environment variables`, application's `YAML file` or `properties file`.
 
-### Configuring via environment variables
+### 1. HTTP job
 
-When running the application in container, the following environment variables can be specified:
+`HTTP jobs` are designed to perform scheduled HTTP requests, making them ideal for tasks like invoking APIs or triggering webhooks. These jobs include details such as the HTTP method, URL, and body.
 
-Environment variable | Sample value | Description |
---- | --- | --- |
-SPRING_PROFILES_ACTIVE | dev | The profile to run with the application. Can be `dev` and/or `logstash`. |
-LOGSTASH_HOST | logstash | The name of the logstash container to push the logs from the springboot app. It is only required when using the `logstash` profile. |
-LOGSTASH_PORT | 5000 | The port of the logstash container. It is only required when using the `logstash` profile. |
-TRACING_URL | http://jaeger:4318/v1/traces | The url of the jaeger instance for sending tracing details. |
-SCHEDULER_TASKS_X_NAME | testTask | The name of the scheduled task. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_NAME`).
-SCHEDULER_TASKS_X_CRON | "0 * * * * ?" | The cron expression that defines the schedule for the task. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_CRON`).
-SCHEDULER_TASKS_X_CUSTOM_MESSAGE | testMessage | The custom log message displayed when the task runs, applicable for `custom tasks`. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_CUSTOM_MESSAGE`).
+#### Configuration examples
 
-### Configuring via properties file
-
-The Spring Boot application can also be configured via properties files located in the `app/src/main/resources` directory.
-
-Properties key | Sample value | Description |
---- | --- | --- |
-... | ... | ... |
-
-
-## local.env
-
-The project includes a file named `local.env`, which stores the application details.
-
-Environment variable | Sample value | Description |
---- | --- | --- |
-APPNAME | sample-module | The name of the application |
-VERSION | 0.0.1-SNAPSHOT | The version number of the application |
-
-## Building the Docker Image
-
-To build the Docker image for this application, use the following command:
+Via environment variables:
 
 ```bash
-make build-docker-image
+podman run \
+  -e TZ=UTC \
+  -e SCHEDULER_TASKS_0_NAME=testHttpTask \
+  -e SCHEDULER_TASKS_0_CRON="0 * * * * ?" \
+  -e SCHEDULER_TASKS_0_HTTP_METHOD=GET \
+  -e SCHEDULER_TASKS_0_HTTP_URL=http://example.com \
+  -e SCHEDULER_TASKS_0_HTTP_BODY=null \
+  evocelot/tickr:1.0.0
 ```
 
-This command reads the configuration from the `local.env` file, builds the Docker image with the specified settings, and tags it according to the `APPNAME` and `VERSION` values in the configuration.
+Via YAML:
+
+```yml
+scheduler:
+  tasks:
+    - name: testHttpTask
+      cron: "0 * * * * ?"
+      http:
+        method: GET
+        url: http://example.com
+        body: null
+```
+
+When this job is triggered:
+
+- The configured HTTP request is executed.
+- The job logs the request details and the response for debugging and monitoring purposes.
+
+### 2. Custom Jobs
+
+Custom jobs are simpler and serve primarily as scheduled logging tasks.
+This type of job is intended to guide the implementation of custom jobs.
+
+#### Configuration examples
+
+Via environment variables:
+
+```bash
+podman run \
+  -e TZ=UTC \
+  -e SCHEDULER_TASKS_0_NAME=testTask \
+  -e SCHEDULER_TASKS_0_CRON="0 * * * * ?" \
+  -e SCHEDULER_TASKS_0_CUSTOM_MESSAGE="Hourly log message for system status." \
+  evocelot/tickr:1.0.0
+```
+
+Via YAML:
+
+```yml
+scheduler:
+  tasks:
+    - name: testTask
+      cron: "0 * * * * ?"
+      custom:
+        message: "Hourly log message for system status."
+```
+When this job is triggered:
+
+The specified message is logged using the application's logging framework.
 
 ## Logging
 
@@ -126,7 +135,7 @@ The project utilizes the `ELK stack` for `centralized log collection` and monito
 - Elasticsearch: Stores, indexes, and makes the application's logs searchable.
 - Kibana: Provides a user interface for managing the logs stored in Elasticsearch.
 
-> **_NOTE:_** To enable log forwarding to Logstash, set `SPRING_PROFILES_ACTIVE` to `logstash` in the container’s startup configuration.
+> **_NOTE:_** To enable log forwarding to Logstash, set the `LOGSTASH_ENABLED` environment variable to `"true"` in the container’s startup configuration.
 
 View logs in Kibana:
 ![View logs in Kibana](img/kibana.png)
@@ -139,11 +148,7 @@ The project integrates the following tools for monitoring and observability:
 - Prometheus: Collects and stores application metrics.
 - Grafana: Visualizes metrics in an intuitive interface.
 
-To enable full monitoring capabilities (logs, tracing, and metrics), use the following command for starting the application:
-
-```bash
-make all
-```
+> **_NOTE:_** To enable tracing collection, set the `TRACING__ENABLED` environment variable to `"true"` in the container’s startup configuration.
 
 View tracing informations in Jaeger:
 ![View tracing informations in Jaeger](img/jaeger.png)
@@ -151,10 +156,10 @@ View tracing informations in Jaeger:
 App monitoring in Grafana:
 ![App monitoring in Grafana](img/grafana.png)
 
+## Documentation
+
+Detailed documentation is available here: [Documentation](/docs/docs.md)
+
 ## Contributions
 
 Contributions to the project are welcome! If you find issues or have suggestions for improvements, feel free to open an issue or submit a pull request.
-
-## Documentation
-
-For more documentation, see: [Documentation](/docs/docs.md)
