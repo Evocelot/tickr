@@ -1,5 +1,6 @@
 package hu.evocelot.tickr.service;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,6 +86,8 @@ public class SchedulerService {
 
             // Schedule the job with the scheduler
             scheduler.scheduleJob(jobDetail, trigger);
+
+            LOG.info(MessageFormat.format("Task with name {0} have been scheduled successfully.", task.getName()));
         }
     }
 }

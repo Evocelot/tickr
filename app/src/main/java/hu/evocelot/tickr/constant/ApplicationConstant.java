@@ -15,4 +15,6 @@ public class ApplicationConstant {
     }
 
     public static final String JOB_DATA_KEY = "data";
+
+    public static final String SCHEDULER_CONFIG_PREFIX = "scheduler";
 }

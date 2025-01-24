@@ -3,7 +3,7 @@ package hu.evocelot.tickr.configuration;
 /**
  * Represents the configuration for a custom task that logs a message.
  * 
- * @see TaskDetails
+ * @author mark.danisovszky
  */
 public class CustomTaskConfig {
     private String message;

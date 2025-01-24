@@ -56,7 +56,7 @@ public class Application {
         return args -> {
             try {
                 schedulerService.scheduleTasks();
-                LOG.info("Tasks have been scheduled successfully.");
+                LOG.info("All task have been scheduled successfully.");
             } catch (SchedulerException e) {
                 LOG.error("Failed to schedule tasks: " + e.getMessage(), e);
             }
