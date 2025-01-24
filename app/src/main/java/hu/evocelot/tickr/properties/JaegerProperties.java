@@ -1,7 +1,5 @@
 package hu.evocelot.tickr.properties;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +19,22 @@ public class JaegerProperties {
     @Value("${TRACING_URL:}")
     private String tracingUrl;
 
-    public Optional<String> getTracingUrl() {
-        return tracingUrl.isEmpty() ? Optional.empty() : Optional.of(tracingUrl);
+    @Value("${TRACING_ENABLED:}")
+    private String tracingEnabled;
+
+    public String getTracingUrl() {
+        return tracingUrl;
     }
 
     public void setTracingUrl(String tracingUrl) {
         this.tracingUrl = tracingUrl;
+    }
+
+    public String getTracingEnabled() {
+        return tracingEnabled;
+    }
+
+    public void setTracingEnabled(String tracingEnabled) {
+        this.tracingEnabled = tracingEnabled;
     }
 }
