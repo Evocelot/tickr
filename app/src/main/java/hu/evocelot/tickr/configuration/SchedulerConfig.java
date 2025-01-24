@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import hu.evocelot.tickr.constant.ApplicationConstant;
+
 /**
  * Configuration class for the scheduler.
  * <p>
@@ -35,7 +37,7 @@ import org.springframework.stereotype.Component;
  * @author mark.danisovszky
  */
 @Component
-@ConfigurationProperties(prefix = "scheduler")
+@ConfigurationProperties(prefix = ApplicationConstant.SCHEDULER_CONFIG_PREFIX)
 public class SchedulerConfig {
     private List<TaskConfig> tasks;
 

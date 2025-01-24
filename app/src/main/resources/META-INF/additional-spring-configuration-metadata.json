@@ -1,0 +1,58 @@
+{
+  "properties": [
+    {
+      "name": "scheduler.tasks",
+      "type": "java.util.List",
+      "description": "A list of tasks to be scheduled",
+      "items": {
+        "type": "object",
+        "properties": [
+          {
+            "name": "name",
+            "type": "java.lang.String",
+            "description": "The name of the task"
+          },
+          {
+            "name": "cron",
+            "type": "java.lang.String",
+            "description": "The cron expression specifying the schedule"
+          },
+          {
+            "name": "http",
+            "type": "object",
+            "description": "HTTP request configuration",
+            "properties": [
+              {
+                "name": "method",
+                "type": "java.lang.String",
+                "description": "The HTTP method (e.g., GET, POST)"
+              },
+              {
+                "name": "url",
+                "type": "java.lang.String",
+                "description": "The URL to send the HTTP request to"
+              },
+              {
+                "name": "body",
+                "type": "java.lang.String",
+                "description": "The body of the HTTP request (can be null)"
+              }
+            ]
+          },
+          {
+            "name": "custom",
+            "type": "object",
+            "description": "Custom job configuration",
+            "properties": [
+              {
+                "name": "message",
+                "type": "java.lang.String",
+                "description": "A custom message for the job"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
