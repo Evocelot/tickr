@@ -16,13 +16,15 @@ import org.quartz.TriggerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import hu.evocelot.tickr.configuration.HttpTaskConfig;
 import hu.evocelot.tickr.configuration.CustomTaskConfig;
+import hu.evocelot.tickr.configuration.HttpTaskConfig;
+import hu.evocelot.tickr.configuration.KafkaProducerTaskConfig;
 import hu.evocelot.tickr.configuration.SchedulerConfig;
 import hu.evocelot.tickr.configuration.TaskConfig;
 import hu.evocelot.tickr.constant.ApplicationConstant;
-import hu.evocelot.tickr.job.HttpJob;
 import hu.evocelot.tickr.job.CustomJob;
+import hu.evocelot.tickr.job.HttpJob;
+import hu.evocelot.tickr.job.KafkaProducerJob;
 
 /**
  * Service for scheduling tasks using Quartz Scheduler.
@@ -74,6 +76,10 @@ public class SchedulerService {
                         .withIdentity(task.getName())
                         .build();
                 jobDetail.getJobDataMap().put(ApplicationConstant.JOB_DATA_KEY, logTaskConfig);
+            } else if (Objects.nonNull(task.getKafkaProducer())) {
+                KafkaProducerTaskConfig kafkaProducerTaskConfig = (KafkaProducerTaskConfig) task.getKafkaProducer();
+                jobDetail = JobBuilder.newJob(KafkaProducerJob.class).withIdentity(task.getName()).build();
+                jobDetail.getJobDataMap().put(ApplicationConstant.JOB_DATA_KEY, kafkaProducerTaskConfig);
             } else {
                 throw new UnsupportedOperationException("The job type is not supported!");
             }

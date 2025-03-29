@@ -21,6 +21,7 @@ public class TaskConfig {
     private String type;
     private HttpTaskConfig http;
     private CustomTaskConfig custom;
+    private KafkaProducerTaskConfig kafkaProducer;
 
     public String getName() {
         return name;
@@ -51,7 +52,7 @@ public class TaskConfig {
     }
 
     public void setHttp(HttpTaskConfig http) {
-        if (Objects.nonNull(custom)) {
+        if (Objects.nonNull(custom) || Objects.nonNull(kafkaProducer)) {
             throw new IllegalStateException();
         }
 
@@ -63,10 +64,22 @@ public class TaskConfig {
     }
 
     public void setCustom(CustomTaskConfig custom) {
-        if (Objects.nonNull(http)) {
+        if (Objects.nonNull(http) || Objects.nonNull(kafkaProducer)) {
             throw new IllegalStateException();
         }
 
         this.custom = custom;
+    }
+
+    public KafkaProducerTaskConfig getKafkaProducer() {
+        return kafkaProducer;
+    }
+
+    public void setKafkaProducer(KafkaProducerTaskConfig kafkaProducer) {
+        if (Objects.nonNull(http) || Objects.nonNull(custom)) {
+            throw new IllegalStateException();
+        }
+
+        this.kafkaProducer = kafkaProducer;
     }
 }

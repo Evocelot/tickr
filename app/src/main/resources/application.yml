@@ -29,3 +29,8 @@ scheduler:
       cron: "0 * * * * ?" # Every minute
       custom:
         message: test
+    - name: kafkaJob
+      cron: "0 * * * * ?" # Every minute
+      kafka-producer:
+        topic: test-topic
+        message: test-message
