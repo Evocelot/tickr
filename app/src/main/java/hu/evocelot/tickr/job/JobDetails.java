@@ -1,27 +1,31 @@
-package hu.evocelot.tickr.configuration;
+package hu.evocelot.tickr.job;
 
 import java.util.Objects;
 
+import hu.evocelot.tickr.job.custom.CustomJobDetails;
+import hu.evocelot.tickr.job.http.HttpJobDetails;
+import hu.evocelot.tickr.job.kafka.KafkaProducerJobDetails;
+
 /**
- * Represents the configuration for a single task in the system.
+ * Represents the details for a single job in the system.
  * 
  * <p>
- * This class allows defining task-specific properties such as the task's name,
+ * This class allows defining job-specific properties such as the task's name,
  * schedule, and type. Additionally, a task can have either an
- * {@link HttpTaskConfig} or a {@link CustomTaskConfig} associated with it, but
+ * {@link HttpJobDetails} or a {@link CustomJobDetails} associated with it, but
  * not both at the same time. Attempting to set both configurations will result
  * in an {@link IllegalStateException}.
  * 
  * @author mark.danisovszky
  */
-public class TaskConfig {
+public class JobDetails {
 
     private String name;
     private String cron;
     private String type;
-    private HttpTaskConfig http;
-    private CustomTaskConfig custom;
-    private KafkaProducerTaskConfig kafkaProducer;
+    private HttpJobDetails http;
+    private CustomJobDetails custom;
+    private KafkaProducerJobDetails kafkaProducer;
 
     public String getName() {
         return name;
@@ -47,11 +51,11 @@ public class TaskConfig {
         this.type = type;
     }
 
-    public HttpTaskConfig getHttp() {
+    public HttpJobDetails getHttp() {
         return http;
     }
 
-    public void setHttp(HttpTaskConfig http) {
+    public void setHttp(HttpJobDetails http) {
         if (Objects.nonNull(custom) || Objects.nonNull(kafkaProducer)) {
             throw new IllegalStateException();
         }
@@ -59,11 +63,11 @@ public class TaskConfig {
         this.http = http;
     }
 
-    public CustomTaskConfig getCustom() {
+    public CustomJobDetails getCustom() {
         return custom;
     }
 
-    public void setCustom(CustomTaskConfig custom) {
+    public void setCustom(CustomJobDetails custom) {
         if (Objects.nonNull(http) || Objects.nonNull(kafkaProducer)) {
             throw new IllegalStateException();
         }
@@ -71,11 +75,11 @@ public class TaskConfig {
         this.custom = custom;
     }
 
-    public KafkaProducerTaskConfig getKafkaProducer() {
+    public KafkaProducerJobDetails getKafkaProducer() {
         return kafkaProducer;
     }
 
-    public void setKafkaProducer(KafkaProducerTaskConfig kafkaProducer) {
+    public void setKafkaProducer(KafkaProducerJobDetails kafkaProducer) {
         if (Objects.nonNull(http) || Objects.nonNull(custom)) {
             throw new IllegalStateException();
         }

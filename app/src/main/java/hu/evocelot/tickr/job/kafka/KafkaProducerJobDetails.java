@@ -1,12 +1,12 @@
-package hu.evocelot.tickr.configuration;
+package hu.evocelot.tickr.job.kafka;
 
 /**
- * Represents the kafka producer configuration for a task, including the topic
+ * Represents the kafka producer details for a task, including the topic
  * and the message to send.
  * 
  * @author mark.danisovszky
  */
-public class KafkaProducerTaskConfig {
+public class KafkaProducerJobDetails {
     private String topic;
     private String message;
 

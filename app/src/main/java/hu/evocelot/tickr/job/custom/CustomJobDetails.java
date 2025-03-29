@@ -1,11 +1,11 @@
-package hu.evocelot.tickr.configuration;
+package hu.evocelot.tickr.job.custom;
 
 /**
- * Represents the configuration for a custom task that logs a message.
+ * Represents the details for a custom task that logs a message.
  * 
  * @author mark.danisovszky
  */
-public class CustomTaskConfig {
+public class CustomJobDetails {
     private String message;
 
     public String getMessage() {

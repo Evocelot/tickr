@@ -1,12 +1,12 @@
-package hu.evocelot.tickr.configuration;
+package hu.evocelot.tickr.job.http;
 
 /**
- * Represents the HTTP configuration for a task, including the HTTP method,
+ * Represents the HTTP details for a task, including the HTTP method,
  * the target URL, and an optional request body.
  * 
  * @author mark.danisovszky
  */
-public class HttpTaskConfig {
+public class HttpJobDetails {
     private String method;
     private String url;
     private String body;
