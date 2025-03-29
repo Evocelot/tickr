@@ -12,7 +12,7 @@ JAEGER_TRACING_PORT=4317
 create-podman-network:
 	@echo "[>>>] Creating podman network"
 	@podman network create $(NETWORK_NAME) 2>/dev/null || \
-		echo "There is no need to create the network named $(NETWORK_NAME) because it already exists."
+		echo "There is no need to create the network named $(NETWORK_NAME) because it already exists.";
 	@echo "[<<<]"
 
 # Deletes the created podman network.
@@ -49,10 +49,10 @@ start-local-container: create-podman-network stop-local-container build-docker-i
 		-e KAFKA_ENABLED="true" \
 		-e KAFKA_URL=evocelot-kafka:9092 \
 		-e KAFKA_GROUP_ID=file-group \
-		$(IMAGE_NAME); \
-		\
+		$(IMAGE_NAME)
 	@echo "$(APPNAME) started at: http://localhost:8082"
 	@echo "[<<<]"
+
 # Stops the local container.
 stop-local-container:
 	@echo "[>>>] Stopping the local podman container"
