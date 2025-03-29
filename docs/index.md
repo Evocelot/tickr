@@ -20,6 +20,36 @@ TRACING_URL | http://jaeger:4318/v1/traces | The url of the jaeger instance for 
 SCHEDULER_TASKS_X_NAME | testTask | The name of the scheduled task. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_NAME`).
 SCHEDULER_TASKS_X_CRON | "0 * * * * ?" | The cron expression that defines the schedule for the task. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_CRON`).
 SCHEDULER_TASKS_X_CUSTOM_MESSAGE | testMessage | The custom log message displayed when the task runs, applicable for `custom tasks`. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_CUSTOM_MESSAGE`).
+KAFKA_ENABLED | "true" | If set to `"true"`, you can send messages to the appropriate Kafka topic. |
+
+## Logging
+
+The project utilizes the `ELK stack` for `centralized log collection` and monitoring:
+
+- Logstash: Extracts logs from the application and forwards them to Elasticsearch.
+- Elasticsearch: Stores, indexes, and makes the application's logs searchable.
+- Kibana: Provides a user interface for managing the logs stored in Elasticsearch.
+
+> **_NOTE:_** To enable log forwarding to Logstash, set the `LOGSTASH_ENABLED` environment variable to `"true"` in the container’s startup configuration.
+
+View logs in Kibana:
+![View logs in Kibana](img/kibana.png)
+
+## Monitoring
+
+The project integrates the following tools for monitoring and observability:
+
+- Jaeger: Collects and displays tracing information.
+- Prometheus: Collects and stores application metrics.
+- Grafana: Visualizes metrics in an intuitive interface.
+
+> **_NOTE:_** To enable tracing collection, set the `TRACING__ENABLED` environment variable to `"true"` in the container’s startup configuration.
+
+View tracing informations in Jaeger:
+![View tracing informations in Jaeger](img/jaeger.png)
+
+App monitoring in Grafana:
+![App monitoring in Grafana](img/grafana.png)
 
 ## local.env
 

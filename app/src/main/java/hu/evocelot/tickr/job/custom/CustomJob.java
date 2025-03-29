@@ -1,4 +1,4 @@
-package hu.evocelot.tickr.job;
+package hu.evocelot.tickr.job.custom;
 
 import java.text.MessageFormat;
 
@@ -9,9 +9,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import hu.evocelot.tickr.configuration.CustomTaskConfig;
-import hu.evocelot.tickr.configuration.TaskConfig;
 import hu.evocelot.tickr.constant.ApplicationConstant;
+import hu.evocelot.tickr.job.JobDetails;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 
@@ -20,8 +19,8 @@ import io.opentelemetry.api.trace.Tracer;
  * execution.
  * 
  * <p>
- * The {@code CustomJob} retrieves a {@link TaskConfig} object from the
- * {@link JobExecutionContext}, extracts the {@link CustomTaskConfig}, and logs
+ * The {@code CustomJob} retrieves a {@link JobDetails} object from the
+ * {@link JobExecutionContext}, extracts the {@link CustomJobDetails}, and logs
  * the configured message using Log4j.
  * 
  * <h2>Purpose</h2>
@@ -41,8 +40,8 @@ public class CustomJob implements Job {
      * Executes the custom job.
      * 
      * <p>
-     * Retrieves the {@link TaskConfig} from the job data map, extracts the
-     * {@link CustomTaskConfig}, and logs the configured message.
+     * Retrieves the {@link JobDetails} from the job data map, extracts the
+     * {@link CustomJobDetails}, and logs the configured message.
      * 
      * @param context the Quartz job execution context containing the job details
      *                and data
@@ -53,7 +52,7 @@ public class CustomJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         Span span = tracer.spanBuilder("CustomJob").startSpan();
-        CustomTaskConfig taskConfig = (CustomTaskConfig) context.getJobDetail().getJobDataMap()
+        CustomJobDetails taskConfig = (CustomJobDetails) context.getJobDetail().getJobDataMap()
                 .get(ApplicationConstant.JOB_DATA_KEY);
 
         LOG.info(MessageFormat.format("CustomJob executed. Message: {0}", taskConfig.getMessage()));

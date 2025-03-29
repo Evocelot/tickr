@@ -3,6 +3,7 @@ package hu.evocelot.tickr;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.SchedulerException;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -44,6 +45,7 @@ public class Application {
      * @see SpringApplication#run(Class, String...)
      */
     public static void main(String[] args) {
+        MDC.put("app-name", "tickr-module");
         SpringApplication.run(Application.class, args);
     }
 
@@ -52,7 +54,7 @@ public class Application {
      * when the application starts.
      */
     @Bean
-    public CommandLineRunner run() {
+    CommandLineRunner run() {
         return args -> {
             try {
                 schedulerService.scheduleTasks();

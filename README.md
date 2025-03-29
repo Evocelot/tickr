@@ -11,52 +11,11 @@ The starter project: `springboot - microbase` is an open-source starter project 
 - **Docker / Podman**
 - **Make**
 - **Quartz**
-- **Elasticsearch**
-- **Logstash**
-- **Kibana**
-- **Jaeger**
-- **Prometheus**
-- **Grafana**
 
-## How to run:
-
-The project includes a `Makefile` to simplify application startup. Each Makefile target can be executed independently.
-
-> **_NOTE:_** If you are using Docker instead of Podman, replace `podman` with `docker` in the Makefile commands.
-
-### Run with full stack
-
-To run the application along with ELK stack and observability features, execute:
-
-```bash
-make all
-```
-
-This command starts the following containers:
-
-- elasticsearch
-- logstash
-- kibana
-- jaeger
-- prometheus
-- grafana
-- tickr-module
-
-By default, the tickr-module runs on port `8081`.
-
-### Run TickR module only
-
-To run only the TickR module only:
-
-```bash
-make start-local-container
-```
-
-> **_NOTE:_** To disable log collection and tracing, manually set the `LOGSTASH_ENABLED` and `TRACING_ENABLED` environment variables to `"false"` in the `Makefile`.
-
-## Job types
+## Core Functions
 
 The TickR application currently supports two distinct job types, tailored to meet different operational needs. Each job type can be configured via `environment variables`, application's `YAML file` or `properties file`.
+
 
 ### 1. HTTP job
 
@@ -95,6 +54,39 @@ When this job is triggered:
 - The configured HTTP request is executed.
 - The job logs the request details and the response for debugging and monitoring purposes.
 
+### 2. Kafka Jobs
+
+...
+
+#### Configuration examples
+
+Via environment variables:
+
+```bash
+podman run \
+  -e TZ=UTC \
+  -e SCHEDULER_TASKS_0_NAME=kafkaJob \
+  -e SCHEDULER_TASKS_0_CRON="0 * * * * ?" \
+  -e SCHEDULER_TASKS_0_KAFKA_PRODUCER_TOPIC="Test topic" \
+  -e SCHEDULER_TASKS_0_KAFKA_PRODUCER_MESSAGE="Test message" \
+  evocelot/tickr:1.0.0
+```
+
+Via YAML:
+
+```yml
+scheduler:
+  tasks:
+    - name: kafkaJob
+      cron: "0 * * * * ?"
+      kafka-producer:
+        topic: test-topic
+        message: test-message
+```
+When this job is triggered:
+
+...
+
 ### 2. Custom Jobs
 
 Custom jobs are simpler and serve primarily as scheduled logging tasks.
@@ -127,38 +119,51 @@ When this job is triggered:
 
 The specified message is logged using the application's logging framework.
 
-## Logging
+## How to run:
 
-The project utilizes the `ELK stack` for `centralized log collection` and monitoring:
+The project includes a `Makefile` to simplify application startup. Each Makefile target can be executed independently.
 
-- Logstash: Extracts logs from the application and forwards them to Elasticsearch.
-- Elasticsearch: Stores, indexes, and makes the application's logs searchable.
-- Kibana: Provides a user interface for managing the logs stored in Elasticsearch.
+> **_NOTE:_** If you are using Docker instead of Podman, replace `podman` with `docker` in the Makefile commands.
 
-> **_NOTE:_** To enable log forwarding to Logstash, set the `LOGSTASH_ENABLED` environment variable to `"true"` in the container’s startup configuration.
+### Run with full stack
 
-View logs in Kibana:
-![View logs in Kibana](img/kibana.png)
+To run the application along with ELK stack and observability features, execute:
 
-## Monitoring
+```bash
+make start-monitoring-containers
+make start-kafka
+make start-local-container
+```
 
-The project integrates the following tools for monitoring and observability:
+This command starts the following containers:
 
-- Jaeger: Collects and displays tracing information.
-- Prometheus: Collects and stores application metrics.
-- Grafana: Visualizes metrics in an intuitive interface.
+- elasticsearch
+- logstash
+- kibana
+- jaeger
+- prometheus
+- grafana
+- tickr-module
 
-> **_NOTE:_** To enable tracing collection, set the `TRACING__ENABLED` environment variable to `"true"` in the container’s startup configuration.
+By default, the tickr-module runs on port `8082`.
 
-View tracing informations in Jaeger:
-![View tracing informations in Jaeger](img/jaeger.png)
+### Run the module only
 
-App monitoring in Grafana:
-![App monitoring in Grafana](img/grafana.png)
+To run only the module only:
+
+```bash
+make start-local-container
+```
+
+> **_NOTE:_** To disable log collection, tracing and communication via kafka, manually set the `LOGSTASH_ENABLED`,  `TRACING_ENABLED` and `KAFKA_ENABLED` environment variables to `"false"` in the `Makefile`.
+
+## Docker Images
+
+The released Docker images for this application are available at: [dockerhub](https://hub.docker.com/r/evocelot/tickr)
 
 ## Documentation
 
-Detailed documentation is available here: [Documentation](/docs/docs.md)
+Detailed documentation is available here: [Documentation](/docs/index.md)
 
 ## Contributions
 

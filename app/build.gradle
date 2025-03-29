@@ -1,7 +1,7 @@
 plugins {
     id 'application'
     id 'java'
-    id 'org.springframework.boot' version '3.4.1'
+    id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -25,10 +25,12 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '3.4.2'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '3.4.2'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '3.4.2'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-quartz', version: '3.4.2'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '3.4.4'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '3.4.4'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '3.4.4'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-quartz', version: '3.4.4'
+    implementation group: 'org.springframework.kafka', name: 'spring-kafka', version: '3.3.3'
+
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.0'
     implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.14.2'
     implementation group: 'io.micrometer', name: 'micrometer-tracing-bridge-otel', version: '1.4.1'
