@@ -54,9 +54,9 @@ When this job is triggered:
 - The configured HTTP request is executed.
 - The job logs the request details and the response for debugging and monitoring purposes.
 
-### 2. Kafka Jobs
+### 2. Kafka Producer jobs
 
-...
+This job automatically sends messages to a Kafka topic based on the provided configuration.
 
 #### Configuration examples
 
@@ -84,6 +84,8 @@ scheduler:
         message: test-message
 ```
 When this job is triggered:
+
+It sends the specified message to the defined Kafka topic.
 
 ...
 

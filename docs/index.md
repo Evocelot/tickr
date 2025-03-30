@@ -21,6 +21,8 @@ SCHEDULER_TASKS_X_NAME | testTask | The name of the scheduled task. `X` represen
 SCHEDULER_TASKS_X_CRON | "0 * * * * ?" | The cron expression that defines the schedule for the task. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_CRON`).
 SCHEDULER_TASKS_X_CUSTOM_MESSAGE | testMessage | The custom log message displayed when the task runs, applicable for `custom tasks`. `X` represents the task index (e.g., `SCHEDULER_TASKS_0_CUSTOM_MESSAGE`).
 KAFKA_ENABLED | "true" | If set to `"true"`, you can send messages to the appropriate Kafka topic. |
+KAFKA_URL | evocelot-kafka:9092 | The url of the kafka instance.
+KAFKA_GROUP_ID | file-group | The id of the kafka group.
 
 ## Logging
 
