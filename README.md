@@ -7,7 +7,7 @@ The starter project: `springboot - microbase` is an open-source starter project 
 ## Technologies used
 
 - **Java 21**
-- **SpringBoot 3.4.1**
+- **SpringBoot 3.4.5**
 - **Docker / Podman**
 - **Make**
 - **Quartz**
@@ -15,7 +15,6 @@ The starter project: `springboot - microbase` is an open-source starter project 
 ## Core Functions
 
 The TickR application currently supports two distinct job types, tailored to meet different operational needs. Each job type can be configured via `environment variables`, application's `YAML file` or `properties file`.
-
 
 ### 1. HTTP job
 
@@ -87,9 +86,7 @@ When this job is triggered:
 
 It sends the specified message to the defined Kafka topic.
 
-...
-
-### 2. Custom Jobs
+### Custom Jobs
 
 Custom jobs are simpler and serve primarily as scheduled logging tasks.
 This type of job is intended to guide the implementation of custom jobs.
@@ -137,7 +134,7 @@ make start-kafka
 make start-local-container
 ```
 
-This command starts the following containers:
+This commands starts the following containers:
 
 - elasticsearch
 - logstash
@@ -145,6 +142,9 @@ This command starts the following containers:
 - jaeger
 - prometheus
 - grafana
+- zookeeper
+- kafka-ui
+- kafka
 - tickr-module
 
 By default, the tickr-module runs on port `8082`.

@@ -1,4 +1,4 @@
-FROM openjdk:21-slim-buster
+FROM openjdk:25-oracle
 
 WORKDIR /app
 

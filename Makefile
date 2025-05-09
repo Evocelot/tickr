@@ -162,7 +162,8 @@ start-observability: stop-observability
   		--memory-swap="128m" \
 		grafana/grafana:11.4.0; \
 	\
-	echo "Grafana can be accessed at: http://localhost:3000"
+	echo "Grafana can be accessed at: http://localhost:3000" \
+	echo "Username and password: admin"
 	@echo "[<<<]"
 
 # Stops observability containers.
