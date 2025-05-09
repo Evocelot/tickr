@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import hu.evocelot.tickr.constant.ApplicationConstant;
@@ -31,11 +31,13 @@ public class KafkaProducerJob implements Job {
 
     private static final Logger LOG = LogManager.getLogger(KafkaProducerJob.class);
 
-    @Autowired
-    private Tracer tracer;
+    private final Tracer tracer;
+    private final KafkaMessageProducer kafkaMessageProducer;
 
-    @Autowired(required = false)
-    private KafkaMessageProducer kafkaMessageProducer;
+    public KafkaProducerJob(Tracer tracer, @Nullable KafkaMessageProducer kafkaMessageProducer) {
+        this.tracer = tracer;
+        this.kafkaMessageProducer = kafkaMessageProducer;
+    }
 
     @Override
     public void execute(JobExecutionContext context) {
@@ -45,10 +47,14 @@ public class KafkaProducerJob implements Job {
                 .getJobDataMap()
                 .get(ApplicationConstant.JOB_DATA_KEY);
 
-        kafkaMessageProducer.sendMessage(kafkaProducerTaskConfig.getTopic(), kafkaProducerTaskConfig.getMessage());
+        if (kafkaMessageProducer != null) {
+            kafkaMessageProducer.sendMessage(kafkaProducerTaskConfig.getTopic(), kafkaProducerTaskConfig.getMessage());
 
-        LOG.info(MessageFormat.format("Kafka producer job executed. Topics: {0} | Message: {1}",
-                kafkaProducerTaskConfig.getTopic(), kafkaProducerTaskConfig.getMessage()));
+            LOG.info(MessageFormat.format("Kafka producer job executed. Topics: {0} | Message: {1}",
+                    kafkaProducerTaskConfig.getTopic(), kafkaProducerTaskConfig.getMessage()));
+        } else {
+            LOG.warn("KafkaMessageProducer is not available. Skipping message send.");
+        }
         span.end();
     }
 }

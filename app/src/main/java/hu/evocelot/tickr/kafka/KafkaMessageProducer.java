@@ -2,7 +2,6 @@ package hu.evocelot.tickr.kafka;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -18,14 +17,17 @@ import org.springframework.stereotype.Component;
  * 
  * @author mark.danisovszky
  */
-@ConditionalOnProperty(name = "KAFKA_ENABLED", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(name = "kafka.enabled", havingValue = "true", matchIfMissing = false)
 @Component
 public class KafkaMessageProducer {
 
     private static final Logger LOG = LogManager.getLogger(KafkaMessageProducer.class);
 
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    public KafkaMessageProducer(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     /**
      * Sends a message to the specified Kafka topic.

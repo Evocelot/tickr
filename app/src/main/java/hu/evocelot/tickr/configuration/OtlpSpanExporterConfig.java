@@ -1,6 +1,5 @@
 package hu.evocelot.tickr.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,8 +26,11 @@ import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
 @Configuration
 public class OtlpSpanExporterConfig {
 
-    @Autowired
-    private JaegerProperties jaegerProperties;
+    private final JaegerProperties jaegerProperties;
+
+    public OtlpSpanExporterConfig(JaegerProperties jaegerProperties) {
+        this.jaegerProperties = jaegerProperties;
+    }
 
     /**
      * Creates and configures the {@link OtlpGrpcSpanExporter} bean.
@@ -45,15 +47,14 @@ public class OtlpSpanExporterConfig {
      */
     @Bean
     OtlpGrpcSpanExporter otlpGrpcSpanExporter() {
-        if (jaegerProperties.getTracingEnabled().equals("true")) {
-            String tracingUrl = jaegerProperties.getTracingUrl();
+        if (jaegerProperties.getEnabled().equals("true")) {
+            String tracingUrl = jaegerProperties.getUrl();
 
             // Create and return the OtlpGrpcSpanExporter, configured with the tracing URL
             // from JaegerProperties
             return OtlpGrpcSpanExporter.builder()
                     .setEndpoint(tracingUrl)
                     .build();
-
         }
 
         return null;
