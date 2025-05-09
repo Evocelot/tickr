@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -33,16 +32,15 @@ public class HttpJob implements Job {
     private static final Logger LOG = LogManager.getLogger(HttpJob.class);
 
     private final RestTemplate restTemplate;
-
-    @Autowired
-    private Tracer tracer;
+    private final Tracer tracer;
 
     /**
      * Constructs an instance of {@code HttpJob} and initializes a
      * {@link RestTemplate} for executing HTTP requests.
      */
-    public HttpJob() {
-        this.restTemplate = new RestTemplate();
+    public HttpJob(RestTemplate restTemplate, Tracer tracer) {
+        this.restTemplate = restTemplate;
+        this.tracer = tracer;
     }
 
     /**

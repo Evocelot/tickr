@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import hu.evocelot.tickr.constant.ApplicationConstant;
 import hu.evocelot.tickr.job.JobDetails;
@@ -33,8 +32,11 @@ import io.opentelemetry.api.trace.Tracer;
 public class CustomJob implements Job {
     private static final Logger LOG = LogManager.getLogger(CustomJob.class);
 
-    @Autowired
-    private Tracer tracer;
+    private final Tracer tracer;
+
+    public CustomJob(Tracer tracer) {
+        this.tracer = tracer;
+    }
 
     /**
      * Executes the custom job.

@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,8 +28,11 @@ public class Application {
 
     private static final Logger LOG = LogManager.getLogger(Application.class);
 
-    @Autowired
-    private SchedulerService schedulerService;
+    private final SchedulerService schedulerService;
+
+    public Application(SchedulerService schedulerService) {
+        this.schedulerService = schedulerService;
+    }
 
     /**
      * Main method that initiates the Spring Boot application.

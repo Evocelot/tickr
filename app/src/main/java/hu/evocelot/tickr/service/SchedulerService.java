@@ -13,7 +13,6 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hu.evocelot.tickr.configuration.SchedulerConfig;
@@ -39,11 +38,13 @@ public class SchedulerService {
 
     private static final Logger LOG = LogManager.getLogger(SchedulerService.class);
 
-    @Autowired
-    private Scheduler scheduler;
+    private final Scheduler scheduler;
+    private final SchedulerConfig schedulerConfig;
 
-    @Autowired
-    private SchedulerConfig schedulerConfig;
+    public SchedulerService(Scheduler scheduler, SchedulerConfig schedulerConfig) {
+        this.scheduler = scheduler;
+        this.schedulerConfig = schedulerConfig;
+    }
 
     /**
      * Schedules all tasks defined in the application configuration.

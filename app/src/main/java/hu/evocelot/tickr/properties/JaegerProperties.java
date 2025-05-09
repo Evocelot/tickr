@@ -1,7 +1,7 @@
 package hu.evocelot.tickr.properties;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Properties class for reading Jaeger-related environment variables.
@@ -13,28 +13,26 @@ import org.springframework.stereotype.Component;
  * 
  * @author mark.danisovszky
  */
-@Component
+@Configuration
+@ConfigurationProperties(prefix = "tracing")
 public class JaegerProperties {
 
-    @Value("${TRACING_URL:}")
-    private String tracingUrl;
+    private String url;
+    private String enabled;
 
-    @Value("${TRACING_ENABLED:}")
-    private String tracingEnabled;
-
-    public String getTracingUrl() {
-        return tracingUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setTracingUrl(String tracingUrl) {
-        this.tracingUrl = tracingUrl;
+    public void setUrl(String tracingUrl) {
+        this.url = tracingUrl;
     }
 
-    public String getTracingEnabled() {
-        return tracingEnabled;
+    public String getEnabled() {
+        return enabled;
     }
 
-    public void setTracingEnabled(String tracingEnabled) {
-        this.tracingEnabled = tracingEnabled;
+    public void setEnabled(String tracingEnabled) {
+        this.enabled = tracingEnabled;
     }
 }

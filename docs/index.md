@@ -71,3 +71,7 @@ make build-docker-image
 ```
 
 This command reads the configuration from the `local.env` file, builds the Docker image with the specified settings, and tags it according to the `APPNAME` and `VERSION` values in the configuration.
+
+## Migration insturctions
+
+[Migration instructions](/docs/migration/migration.md)

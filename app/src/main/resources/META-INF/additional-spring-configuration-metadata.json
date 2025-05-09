@@ -53,6 +53,31 @@
           }
         ]
       }
+    },
+    {
+      "name": "kafka.enabled",
+      "type": "java.lang.String",
+      "description": "Indicates whether Kafka integration is enabled"
+    },
+    {
+      "name": "kafka.url",
+      "type": "java.lang.String",
+      "description": "The URL of the Kafka broker"
+    },
+    {
+      "name": "kafka.group-id",
+      "type": "java.lang.String",
+      "description": "The Kafka consumer group ID"
+    },
+    {
+      "name": "tracing.enabled",
+      "type": "java.lang.String",
+      "description": "Indicates whether distributed tracing is enabled"
+    },
+    {
+      "name": "tracing.url",
+      "type": "java.lang.String",
+      "description": "The endpoint URL for the tracing backend"
     }
   ]
 }

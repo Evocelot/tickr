@@ -1,7 +1,18 @@
-#Spring settings
+# Spring settings
 spring:
     application:
         name: tickr-module
+
+# Kafka settings
+kafka:
+  enabled: ${KAFKA_ENABLED:true}
+  url: ${KAFKA_URL:}
+  group-id: ${KAFKA_GROUP_ID:}
+
+# Tracing settings
+tracing:
+  enabled: ${TRACING_ENABLED:true}
+  url: ${TRACING_URL:}
 
 # Management details
 management:
