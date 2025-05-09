@@ -1,4 +1,4 @@
-package hu.evocelot.sample;
+package hu.evocelot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
