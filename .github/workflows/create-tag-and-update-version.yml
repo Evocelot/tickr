@@ -1,0 +1,43 @@
+name: Create Tag and Update Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag version (e.g. v1.2.0)'
+        required: true
+
+jobs:
+  tag-and-update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # szükséges a tag létrehozásához
+
+    - name: Set up Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Update version in local.env
+      run: |
+        NEW_VERSION="${{ github.event.inputs.tag }}"
+        # Strip leading 'v' if exists
+        STRIPPED_VERSION="${NEW_VERSION#v}"
+        sed -i "s/^VERSION=.*/VERSION=${STRIPPED_VERSION}/" local.env
+
+    - name: Commit version change
+      run: |
+        git add local.env
+        git commit -m "Update version to ${{ github.event.inputs.tag }}"
+
+    - name: Push commit
+      run: git push
+
+    - name: Create Git tag
+      run: |
+        git tag ${{ github.event.inputs.tag }}
+        git push origin ${{ github.event.inputs.tag }}
